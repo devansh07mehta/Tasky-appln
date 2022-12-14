@@ -23,7 +23,7 @@ const htmlTaskContent = ({id, url, title, type, description}) => `
     <div class='col-md-6 col-lg-4 mt-3' id=${id} key=${id}>
         <div class='card shadow-sm task__card'>
             <div class='card-header d-flex gap-2 justify-content-end task__card__header'>
-                <button type='button' class='btn btn-outline-info me-2' name=${id}>
+                <button type='button' class='btn btn-outline-info me-2' name=${id} onclick='editTask.apply(this, arguments)'>
                     <i class='fa fa-pencil-alt' name=${id}></i>
                 </button>
                 <button type='button' class='btn btn-outline-danger me-2' name=${id} onclick='deleteTask.apply(this, arguments)'>
@@ -38,7 +38,7 @@ const htmlTaskContent = ({id, url, title, type, description}) => `
                     : `<img width='100%' height='150px' style='object-fit: cover; object-position: center' src='http://www.cams-it.com/wp-content/uploads/2015/05/default-placeholder-200x200.png' alt='card image here' class='card-img-top mb-3 rounded-lg' />`
                 }
 
-                <h4 class='task__card__title'>${title}</h4>
+                <h4 class='task__card__title py-1'>${title}</h4>
                 <p class='description text-muted'>${description}</p>
                 <div class='tags text-white d-flex flex-wrap'>
                     <span class='badge bg-primary m-1'>${type}</span>
@@ -131,11 +131,116 @@ const deleteTask = (e) => {
     if(!e) e = window.event;
 
     const targetID = e.target.getAttribute("name");
-    console.log(targetID);
+    // console.log(targetID);
 
     const type = e.target.tagName;
-    console.log(type);
+    // console.log(type);
 
     const removeTask = state.taskList.filter(({id}) => id !== targetID);
-    console.log(removeTask);
+    // console.log(removeTask);
+
+    state.taskList = removeTask;
+    updateLocalStorage();
+
+    if(type === "BUTTON") {
+        // console.log(e.target.parentNode.parentNode);
+        return e.target.parentNode.parentNode.parentNode.parentNode.removeChild(
+            e.target.parentNode.parentNode.parentNode
+        );
+    }
+
+    return e.target.parentNode.parentNode.parentNode.parentNode.parentNode.removeChild(
+        e.target.parentNode.parentNode.parentNode.parentNode
+    );
+};
+
+// edit operation
+const editTask = (e) => {
+    if(!e) e = window.event;
+
+    const targetID = e.target.id;
+    const type = e.target.tagName;
+
+    let parentNode;
+    let taskList;
+    let taskTitle;
+    let taskDescription;
+    let taskType;
+    let submitButton;
+
+    if(type === "BUTTON"){
+        parentNode = e.target.parentNode.parentNode;
+    }
+    else{
+        parentNode = e.target.parentNode.parentNode.parentNode;
+    }
+
+    taskTitle = parentNode.childNodes[3].childNodes[3];
+    // console.log(taskTitle);
+    taskDescription = parentNode.childNodes[3].childNodes[5];
+    taskType = parentNode.childNodes[3].childNodes[7].childNodes[1];
+    submitButton = parentNode.childNodes[5].childNodes[1];
+
+    taskTitle.setAttribute("contenteditable", "true");
+    taskDescription.setAttribute("contenteditable", "true");
+    taskType.setAttribute("contenteditable", "true");
+    
+    submitButton.innerHTML = "Save Changes";
+    submitButton.removeAttribute("data-bs-toggle");
+    submitButton.removeAttribute("data-bs-target");
+    
+    submitButton.setAttribute('onclick', "saveEdit.apply(this, arguments)");
+};
+
+const saveEdit = (e) => {
+    if(!e) e = window.event;
+
+    const targetID = e.target.id;
+    const parentNode = e.target.parentNode.parentNode; //To access the entire card & save the changes further.
+
+    const taskTitle = parentNode.childNodes[3].childNodes[3];
+    const taskDescription = parentNode.childNodes[3].childNodes[5];
+    const taskType = parentNode.childNodes[3].childNodes[7];
+    const submitButton = parentNode.childNodes[5].childNodes[1];
+
+    const updatedData = {
+        taskTitle: taskTitle.innerHTML,
+        taskDescription: taskDescription.innerHTML,
+        taskType: taskType.innerHTML
+    };
+
+    let stateCopy = state.taskList; //Copy of the taskList having all the cards
+    stateCopy = stateCopy.map((task) => task.id === targetID ? {
+        id: task.id,
+        title: updatedData.taskTitle,
+        description: updatedData.taskDescription,
+        type: updatedData.taskType,
+        url: task.url
+    }
+    : task
+    );
+
+    state.taskList = stateCopy;
+    updateLocalStorage();
+
+    taskTitle.setAttribute("contenteditable", "false");
+    taskDescription.setAttribute("contenteditable", "false");
+    taskType.setAttribute("contenteditable", "false");
+
+    submitButton.setAttribute("onclick", "openTask.apply(this, arguments)");
+    submitButton.setAttribute("data-bs-toggle", "modal");
+    submitButton.setAttribute("data-bs-target", "#showTask");
+    submitButton.innerHTML = "Open Task";
+};
+
+const searchTask = (e) => {
+    if(!e) e = window.event;
+
+    while(taskContents.firstChild){
+        taskContents.removeChild(taskContents.firstChild);
+    }
+
+    const resultData = state.taskList.filter(({title}) => title.toLowerCase().includes(e.target.value.toLowerCase()));
+
+    resultData.map((cardData) => taskContents.insertAdjacentHTML("beforeend", htmlTaskContent(cardData)));
 };
