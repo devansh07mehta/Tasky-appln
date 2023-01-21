@@ -19,7 +19,7 @@ const taskModal = document.querySelector(".task__modal__body");
 // ${} This symbol is used for writing Js Code inside HTML which is written within Js.
 
 // Card display after saving detail on modal of add new item.
-const htmlTaskContent = ({id, url, title, type, description}) => `
+const htmlTaskContent = ({ id, url, title, type, description }) => `
     <div class='col-md-6 col-lg-4 mt-3' id=${id} key=${id}>
         <div class='card shadow-sm task__card'>
             <div class='card-header d-flex gap-2 justify-content-end task__card__header'>
@@ -32,11 +32,10 @@ const htmlTaskContent = ({id, url, title, type, description}) => `
             </div>
 
             <div class='card-body'>
-                ${
-                    url
-                    ? `<img width='100%' height='150px' style='object-fit: cover; object-position: center' src=${url} alt='card image here' class='card-img-top mb-3 rounded-lg' />`
-                    : `<img width='100%' height='150px' style='object-fit: cover; object-position: center' src='http://www.cams-it.com/wp-content/uploads/2015/05/default-placeholder-200x200.png' alt='card image here' class='card-img-top mb-3 rounded-lg' />`
-                }
+                ${url
+        ? `<img width='100%' height='213px' style='object-fit: cover; object-position: center' src=${url} alt='card image here' class='card-img-top mb-3 rounded-lg' />`
+        : `<img width='100%' height='213px' style='object-fit: cover; object-position: center' src='https://tse3.mm.bing.net/th?id=OIP.LZsJaVHEsECjt_hv1KrtbAHaHa&pid=Api&P=0' alt='card image here' class='card-img-top mb-3 rounded-lg' />`
+    }
 
                 <h4 class='task__card__title py-1'>${title}</h4>
                 <p class='description text-muted'>${description}</p>
@@ -57,12 +56,11 @@ const htmlModalContent = ({ id, title, description, url }) => {
     const date = new Date(parseInt(id));
     return `
     <div id= ${id}>
-    ${
-        url
+    ${url
             ? `<img width='100%' height='150px' style='object-fit: cover; object-position: center' src=${url} alt='card image here' class='img-fluid place__holder__image mb-3'
             />`
             : `<img width='100%' height='150px' style='object-fit: cover; object-position: center' src='http://www.cams-it.com/wp-content/uploads/2015/05/default-placeholder-200x200.png' alt='card image here' class='img-fluid place__holder_image mb-3'/>`
-    }
+        }
     <strong class='text-sm text-muted'>Created on ${date.toDateString()}</strong>
     <h2 class='my-3'>${title}</h2>
     <p class='lead'>${description}</p>
@@ -73,7 +71,7 @@ const htmlModalContent = ({ id, title, description, url }) => {
 
 const updateLocalStorage = () => {
     localStorage.setItem(
-        "task", 
+        "task",
         JSON.stringify({
             tasks: state.taskList,
         })
@@ -83,8 +81,8 @@ const updateLocalStorage = () => {
 // to get data or card or modals on ur ui from local storage (Browsers storage)
 const loadInitialData = () => {
     const localStorageCopy = JSON.parse(localStorage.task);
-    
-    if(localStorageCopy) state.taskList = localStorageCopy.tasks;
+
+    if (localStorageCopy) state.taskList = localStorageCopy.tasks;
 
     state.taskList.map((cardDate) => {
         taskContents.insertAdjacentHTML("beforeend", htmlTaskContent(cardDate));
@@ -99,17 +97,17 @@ const handleSubmit = (event) => {
         type: document.getElementById("taskType").value,
         description: document.getElementById("taskDesc").value
     };
-    if(input.title === "" || input.type === "" || input.description === ""){
+    if (input.title === "" || input.type === "" || input.description === "") {
         return alert("Please fill all the fields");
     }
-    taskContents.insertAdjacentHTML("beforeend",htmlTaskContent({
+    taskContents.insertAdjacentHTML("beforeend", htmlTaskContent({
         ...input,
         id,
     })
     );
 
     // updated task List - for 1st go
-    state.taskList.push({ ...input, id});
+    state.taskList.push({ ...input, id });
 
     // update the same on localStorage too
     updateLocalStorage();
@@ -121,17 +119,17 @@ const handleSubmit = (event) => {
 // opens new modal on our ui when user clicks on open task
 const openTask = (e) => {
     // pop up the current one
-    if(!e) e = window.event;
+    if (!e) e = window.event;
 
     // finds the object & returns it which matches with the same id.
-    const getTask = state.taskList.find(({id}) => id === e.target.id);
+    const getTask = state.taskList.find(({ id }) => id === e.target.id);
     taskModal.innerHTML = htmlModalContent(getTask);
     console.log(getTask); // returns object containing url, id, title, type, description which is stored in taskList array inside state object.
 };
 
 // delete operation
 const deleteTask = (e) => {
-    if(!e) e = window.event;
+    if (!e) e = window.event;
 
     const targetID = e.target.getAttribute("name");
     // console.log(targetID);
@@ -139,13 +137,13 @@ const deleteTask = (e) => {
     const type = e.target.tagName;
     // console.log(type);
 
-    const removeTask = state.taskList.filter(({id}) => id !== targetID);
+    const removeTask = state.taskList.filter(({ id }) => id !== targetID);
     // console.log(removeTask);
 
     state.taskList = removeTask;
     updateLocalStorage();
 
-    if(type === "BUTTON") {
+    if (type === "BUTTON") {
         // console.log(e.target.parentNode.parentNode);
         return e.target.parentNode.parentNode.parentNode.parentNode.removeChild(
             e.target.parentNode.parentNode.parentNode
@@ -159,7 +157,7 @@ const deleteTask = (e) => {
 
 // edit operation
 const editTask = (e) => {
-    if(!e) e = window.event;
+    if (!e) e = window.event;
 
     const targetID = e.target.id;
     const type = e.target.tagName;
@@ -171,10 +169,10 @@ const editTask = (e) => {
     let taskType;
     let submitButton;
 
-    if(type === "BUTTON"){
+    if (type === "BUTTON") {
         parentNode = e.target.parentNode.parentNode;
     }
-    else{
+    else {
         parentNode = e.target.parentNode.parentNode.parentNode;
     }
 
@@ -187,16 +185,16 @@ const editTask = (e) => {
     taskTitle.setAttribute("contenteditable", "true");
     taskDescription.setAttribute("contenteditable", "true");
     taskType.setAttribute("contenteditable", "true");
-    
+
     submitButton.innerHTML = "Save Changes";
     submitButton.removeAttribute("data-bs-toggle");
     submitButton.removeAttribute("data-bs-target");
-    
+
     submitButton.setAttribute('onclick', "saveEdit.apply(this, arguments)");
 };
 
 const saveEdit = (e) => {
-    if(!e) e = window.event;
+    if (!e) e = window.event;
 
     const targetID = e.target.id;
     const parentNode = e.target.parentNode.parentNode; //To access the entire card & save the changes further.
@@ -221,7 +219,7 @@ const saveEdit = (e) => {
         type: updatedData.taskType,
         url: task.url
     }
-    : task
+        : task
     );
 
     state.taskList = stateCopy;
@@ -238,13 +236,13 @@ const saveEdit = (e) => {
 };
 
 const searchTask = (e) => {
-    if(!e) e = window.event;
+    if (!e) e = window.event;
 
-    while(taskContents.firstChild){
+    while (taskContents.firstChild) {
         taskContents.removeChild(taskContents.firstChild);
     }
 
-    const resultData = state.taskList.filter(({title}) => title.toLowerCase().includes(e.target.value.toLowerCase()));
+    const resultData = state.taskList.filter(({ title }) => title.toLowerCase().includes(e.target.value.toLowerCase()));
 
     resultData.map((cardData) => taskContents.insertAdjacentHTML("beforeend", htmlTaskContent(cardData)));
 };
