@@ -1,0 +1,21 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    background-color: #ebf2ff !important;
+}
+
+.new__btn_mob_only{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    padding: 15px 10px;
+    z-index: 3;
+}
+
+.search__hover{
+    cursor: pointer;
+}
