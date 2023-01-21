@@ -113,6 +113,9 @@ const handleSubmit = (event) => {
 
     // update the same on localStorage too
     updateLocalStorage();
+
+    // conn.collection('taskList').insertMany({...input, id});
+
 };
 
 // opens new modal on our ui when user clicks on open task
@@ -120,10 +123,10 @@ const openTask = (e) => {
     // pop up the current one
     if(!e) e = window.event;
 
-    // find the crt card opened
+    // finds the object & returns it which matches with the same id.
     const getTask = state.taskList.find(({id}) => id === e.target.id);
     taskModal.innerHTML = htmlModalContent(getTask);
-    // console.log(getTask);
+    console.log(getTask); // returns object containing url, id, title, type, description which is stored in taskList array inside state object.
 };
 
 // delete operation
@@ -200,7 +203,8 @@ const saveEdit = (e) => {
 
     const taskTitle = parentNode.childNodes[3].childNodes[3];
     const taskDescription = parentNode.childNodes[3].childNodes[5];
-    const taskType = parentNode.childNodes[3].childNodes[7];
+    const taskType = parentNode.childNodes[3].childNodes[7].childNodes[1];
+    // console.log(taskType);
     const submitButton = parentNode.childNodes[5].childNodes[1];
 
     const updatedData = {
@@ -244,3 +248,5 @@ const searchTask = (e) => {
 
     resultData.map((cardData) => taskContents.insertAdjacentHTML("beforeend", htmlTaskContent(cardData)));
 };
+
+// tasks completed with the checkbox needs to be implemented

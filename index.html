@@ -65,23 +65,23 @@
     </div>
   </div>
 
-    <!-- Modal for Cards on UI -->
-    <div class="modal fade" id="showTask" tabindex="-1" aria-labelledby="showTaskLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="showTaskLabel">Task Details</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body task__modal__body">
-            <!-- <p>js txt</p> -->
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
+  <!-- Modal for Cards on UI -->
+  <div class="modal fade" id="showTask" tabindex="-1" aria-labelledby="showTaskLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="showTaskLabel">Task Details</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body task__modal__body">
+          <!-- <p>js txt</p> -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
+  </div>
 
   <!-- Navbar -->
   <nav class="navbar navbar-expand-md bg-light">
@@ -98,11 +98,11 @@
           </li>
         </ul>
         <!-- <form class="d-flex"> -->
-          <button class="btn btn-primary d-none d-md-flex align-items-center gap-2" type="submit" data-bs-toggle="modal"
-            data-bs-target="#addNewModal">
-            <i class="fas fa-plus"></i>
-            Add an item
-          </button>
+        <button class="btn btn-primary d-none d-md-flex align-items-center gap-2" type="submit" data-bs-toggle="modal"
+          data-bs-target="#addNewModal">
+          <i class="fas fa-plus"></i>
+          Add an item
+        </button>
         <!-- </form> -->
       </div>
     </div>
@@ -116,9 +116,9 @@
       <div class="row justify-content-center">
         <div class="col-md-6">
           <div class="input-group flex-nowrap shadow-lg rounded">
-            <input type="search" class="form-control" placeholder="Search Task" aria-label="Search" oninput="searchTask.apply(this, arguments)"
-              aria-describedby="addon-wrapping" />
-            <span class="input-group-text" id="addon-wrapping">
+            <input type="search" class="form-control shadow-none border-0" placeholder="Search Task" aria-label="Search"
+              oninput="searchTask.apply(this, arguments)" aria-describedby="addon-wrapping" />
+            <span class="input-group-text border-0 search__hover" id="addon-wrapping">
               <i class="fas fa-search"></i>
             </span>
           </div>

@@ -15,3 +15,7 @@ body{
     padding: 15px 10px;
     z-index: 3;
 }
+
+.search__hover{
+    cursor: pointer;
+}
